@@ -108,7 +108,7 @@ async function getAuroraErc20(App, token, address, stakingAddress) {
 
 async function getAuroraVault(App, vault, address, stakingAddress) {
   const calls = [vault.decimals(), vault.token(), vault.name(), vault.symbol(),
-    vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(App.YOUR_ADDRESS), vault.balance()]
+    vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(App.YOUR_ADDRESS), vault.balance()];
   const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] =
     await App.ethcallProvider.all(calls);
   const token = await getAuroraToken(App, token_, address);
@@ -231,6 +231,9 @@ async function getAuroraStoredToken(App, tokenAddress, stakingAddress, type) {
     case "basicAuroraVault":
       const basicAuroraVault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
       return await getAuroraBasicVault(App, basicAuroraVault, tokenAddress, stakingAddress);
+    case "auroraWantVault":
+      const wantVault = new ethcall.Contract(tokenAddress, AURORA_VAULT_WANT_ABI);
+      return await getAuroraWantVault(App, wantVault, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
       return await getAuroraErc20(App, erc20, tokenAddress, stakingAddress);
@@ -270,20 +273,20 @@ async function getAuroraToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const basicVault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
-      const _token = await App.ethcallProvider.all([basicVault.underlying()]);
-      const res = await getAuroraBasicVault(App, basicVault, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "basicAuroraVault");
-      return res;
-    }
-    catch(err) {
-    }
-    try {
       const VAULT = new ethcall.Contract(tokenAddress, AURORA_VAULT_TOKEN_ABI);
       const _token = App.ethcallProvider.all([VAULT.token()]);
       const vault = await getAuroraVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "auroraVault");
       return vault;
+    }
+    catch(err) {
+    }
+    try {
+      const basicVault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
+      const _token = await App.ethcallProvider.all([basicVault.underlying()]);
+      const res = await getAuroraBasicVault(App, basicVault, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "basicAuroraVault");
+      return res;
     }
     catch(err) {
     }
