@@ -8,8 +8,9 @@ const main = async() => {
     "title":"Aurora Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        ["Trisolaris ",     `<a href="trisolaris"       >Various</a>`,      "TRI",       "https://www.trisolaris.io" ],
-        ["NearPad ",     `<a href="nearpad"       >Various</a>`,      "NearPad",       "https://nearpad.io" ]
+        ["Trisolaris ",            `<a href="trisolaris"       >Various</a>`,      "TRI",           "https://www.trisolaris.io" ],
+        ["NearPad ",               `<a href="nearpad"          >Various</a>`,      "NearPad",       "https://nearpad.io" ],
+        ["Vaporwave Finance ",     `<a href="vaporwave"        >Various</a>`,      "VWAVE",         "https://vaporwave.farm" ],
     ]
   }
 
